@@ -26,39 +26,43 @@
     </div>
   </div>
 
-  <!-- Solana Pay SDK, Web3, and QRCode via ESM CDN -->
   <script type="module">
-    import { encodeURL } from 'https://esm.sh/@solana/pay';
-    import { PublicKey } from 'https://esm.sh/@solana/web3.js';
-    import QRCode from 'https://esm.sh/qrcode';
+    import { encodeURL } from 'https://esm.sh/@solana/pay@0.3.8';
+    import { PublicKey } from 'https://esm.sh/@solana/web3.js@1.89.2';
+    import QRCode from 'https://esm.sh/qrcode@1.5.1';
 
     document.addEventListener('DOMContentLoaded', async () => {
-      const recipient = new PublicKey('9MQVDZwRXqqjCb3ZPNnP2giKnvfkbgnNtKm1EVQYR5oR');
-      const amount = 0.1;
-      const reference = new PublicKey('9MQVDZwRXqqjCb3ZPNnP2giKnvfkbgnNtKm1EVQYR5oR');
-      const label = 'Testnet Store';
-      const message = 'Thanks for testing';
+      try {
+        const recipient = new PublicKey('9MQVDZwRXqqjCb3ZPNnP2giKnvfkbgnNtKm1EVQYR5oR');
+        const amount = 0.1;
+        const reference = new PublicKey('9MQVDZwRXqqjCb3ZPNnP2giKnvfkbgnNtKm1EVQYR5oR');
+        const label = 'Testnet Store';
+        const message = 'Thanks for testing';
 
-      const url = encodeURL({
-        recipient,
-        amount,
-        reference,
-        label,
-        message,
-      });
+        const url = encodeURL({
+          recipient,
+          amount,
+          reference,
+          label,
+          message
+        });
 
-      // Draw the QR code into the canvas
-      const canvas = document.getElementById('qr-code');
-      QRCode.toCanvas(canvas, url.toString(), {
-        width: 256,
-        margin: 2,
-        color: {
-          dark: '#000',
-          light: '#fff'
-        }
-      }, function (error) {
-        if (error) console.error('QR Code generation error:', error);
-      });
+        const canvas = document.getElementById('qr-code');
+        QRCode.toCanvas(canvas, url.toString(), {
+          width: 256,
+          margin: 2,
+          color: {
+            dark: "#000000",
+            light: "#FFFFFF"
+          }
+        }, (err) => {
+          if (err) console.error('QR error:', err);
+          else console.log('QR code generated!');
+        });
+
+      } catch (e) {
+        console.error('Error generating QR:', e);
+      }
     });
   </script>
 </body>
