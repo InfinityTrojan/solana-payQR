@@ -10,7 +10,7 @@
   <div class="bg-white shadow-lg rounded-xl p-6 max-w-md w-full text-center">
     <h1 class="text-2xl font-bold text-purple-700 mb-4">Solana Pay (Devnet)</h1>
 
-    <canvas id="qr-code" class="mx-auto mb-6"></canvas>
+    <img id="qr-img" class="mx-auto mb-6 w-64 h-64" alt="Solana Pay QR Code" />
 
     <div class="text-yellow-700 bg-yellow-100 border border-yellow-300 text-sm p-3 rounded mb-4">
       ⚠️ This QR is for <strong>Devnet only</strong>. Ensure your wallet is set to <strong>Devnet</strong> before scanning.
@@ -47,19 +47,17 @@
           message
         });
 
-        const canvas = document.getElementById('qr-code');
-        QRCode.toCanvas(canvas, url.toString(), {
+        const qrDataUrl = await QRCode.toDataURL(url.toString(), {
           width: 256,
           margin: 2,
           color: {
-            dark: "#000000",
-            light: "#FFFFFF"
+            dark: '#000000',
+            light: '#ffffff'
           }
-        }, (err) => {
-          if (err) console.error('QR error:', err);
-          else console.log('QR code generated!');
         });
 
+        document.getElementById('qr-img').src = qrDataUrl;
+        console.log('QR code generated!');
       } catch (e) {
         console.error('Error generating QR:', e);
       }
