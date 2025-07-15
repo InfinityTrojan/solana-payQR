@@ -4,13 +4,14 @@
   <meta charset="UTF-8" />
   <title>Solana Pay Devnet QR</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
 </head>
 <body class="bg-gray-100 text-gray-900 flex items-center justify-center min-h-screen p-4">
   <div class="bg-white shadow-lg rounded-xl p-6 max-w-md w-full text-center">
     <h1 class="text-2xl font-bold text-purple-700 mb-4">Solana Pay (Devnet)</h1>
 
-    <img id="qr-img" class="mx-auto mb-6 w-64 h-64" alt="Solana Pay QR Code" />
+    <canvas id="qr-code" class="mx-auto mb-6 w-64 h-64"></canvas>
 
     <div class="text-yellow-700 bg-yellow-100 border border-yellow-300 text-sm p-3 rounded mb-4">
       ⚠️ This QR is for <strong>Devnet only</strong>. Make sure your wallet is set to <strong>Devnet</strong> before scanning.
@@ -26,38 +27,30 @@
     </div>
   </div>
 
-  <script type="module">
-    import { PublicKey } from 'https://cdn.skypack.dev/@solana/web3.js';
-    import { encodeURL } from 'https://cdn.skypack.dev/@solana/pay';
-    import QRCode from 'https://cdn.skypack.dev/qrcode';
-
-    const recipient = new PublicKey('9MQVDZwRXqqjCb3ZPNnP2giKnvfkbgnNtKm1EVQYR5oR');
+  <script>
+    const recipient = '9MQVDZwRXqqjCb3ZPNnP2giKnvfkbgnNtKm1EVQYR5oR';
     const amount = 0.1;
-    const reference = new PublicKey('9MQVDZwRXqqjCb3ZPNnP2giKnvfkbgnNtKm1EVQYR5oR');
+    const reference = recipient;
     const label = 'Testnet Store';
     const message = 'Thanks for testing';
 
-    const url = encodeURL({
-      recipient,
-      amount,
-      reference,
-      label,
-      message,
-    });
+    const url = `solana:${recipient}?amount=${amount}&reference=${reference}&label=${encodeURIComponent(label)}&message=${encodeURIComponent(message)}`;
+    console.log('Solana Pay URL:', url);
 
-    // Generate QR code as image
-    QRCode.toDataURL(url.toString(), {
+    QRCode.toCanvas(document.getElementById('qr-code'), url, {
       width: 256,
-      margin: 2,
+      margin: 1,
       color: {
         dark: '#000000',
-        light: '#ffffff',
+        light: '#ffffff'
       }
-    }).then((dataUrl) => {
-      document.getElementById('qr-img').src = dataUrl;
-      console.log('QR generated:', url.toString());
-    }).catch((err) => {
-      console.error('QR error:', err);
+    }, function (error) {
+      if (error) {
+        console.error('QR generation failed:', error);
+        alert('QR code failed to generate. Check console.');
+      } else {
+        console.log('QR code generated successfully!');
+      }
     });
   </script>
 </body>
