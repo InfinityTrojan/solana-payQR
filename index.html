@@ -1,44 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Solana Pay Testnet QR</title>
-  <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-</head>
-<body class="bg-gray-100 text-gray-800 min-h-screen flex flex-col items-center justify-center p-6">
-  <div class="bg-white shadow-xl rounded-xl p-8 max-w-md w-full text-center">
-    <h1 class="text-2xl font-bold text-purple-700 mb-4">Solana Pay - Devnet QR</h1>
-    <canvas id="qr-code" class="mx-auto mb-6"></canvas>
-    
-    <p class="text-sm text-yellow-600 bg-yellow-100 p-2 rounded mb-4 border border-yellow-300">
-      ⚠️ This QR code is for <strong>Devnet only</strong>. Make sure your wallet is set to <strong>Devnet</strong> before scanning!
-    </p>
+  <meta charset="UTF-8">
+  <title>Solana Pay Devnet QR</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script type="module">
+    import { encodeURL } from 'https://esm.sh/@solana/pay';
+    import { Keypair, PublicKey } from 'https://esm.sh/@solana/web3.js';
+    import QRCode from 'https://esm.sh/qrcode';
 
-    <p class="text-gray-600 text-sm mb-2">Requesting <strong>0.1 SOL</strong> to:</p>
-    <code class="text-xs break-words bg-gray-100 p-2 rounded block mb-4">
-      9MQVDZwRXqqjCb3ZPNnP2giKnvfkbgnNtKm1EVQYR5oR
-    </code>
+    // Define recipient and other parameters
+    const recipient = new PublicKey('9MQVDZwRXqqjCb3ZPNnP2giKnvfkbgnNtKm1EVQYR5oR');
+    const amount = 0.1;
+    const reference = new PublicKey('9MQVDZwRXqqjCb3ZPNnP2giKnvfkbgnNtKm1EVQYR5oR');
+    const label = 'Testnet Store';
+    const message = 'Thanks for testing';
 
-    <div class="mt-6 text-xs text-gray-400">
-      Powered by <a href="https://solanapay.com" class="text-purple-600 hover:underline">Solana Pay</a>
-    </div>
-  </div>
+    // Construct Solana Pay URL
+    const url = encodeURL({
+      recipient,
+      amount,
+      reference,
+      label,
+      message,
+    });
 
-  <script>
-    const solanaPayUrl = 'solana:9MQVDZwRXqqjCb3ZPNnP2giKnvfkbgnNtKm1EVQYR5oR?amount=0.1&reference=9MQVDZwRXqqjCb3ZPNnP2giKnvfkbgnNtKm1EVQYR5oR&label=Testnet%20Store&message=Thanks%20for%20testing';
-
-    QRCode.toCanvas(document.getElementById('qr-code'), solanaPayUrl, {
+    // Generate QR Code
+    QRCode.toCanvas(document.getElementById('qr-code'), url.toString(), {
       width: 256,
       margin: 2,
       color: {
-        dark: "#000",
-        light: "#FFF"
+        dark: '#000000',
+        light: '#ffffff'
       }
     }, function (error) {
       if (error) console.error(error);
     });
   </script>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 text-gray-900 flex items-center justify-center min-h-screen p-4">
+  <div class="bg-white shadow-lg rounded-xl p-6 max-w-md w-full text-center">
+    <h1 class="text-2xl font-bold text-purple-700 mb-4">Solana Pay (Devnet)</h1>
+
+    <canvas id="qr-code" class="mx-auto mb-6"></canvas>
+
+    <div class="text-yellow-700 bg-yellow-100 border border-yellow-300 text-sm p-3 rounded mb-4">
+      ⚠️ This QR is for <strong>Devnet only</strong>. Ensure your wallet is set to <strong>Devnet</strong> before scanning.
+    </div>
+
+    <p class="text-sm text-gray-600 mb-2">Requesting <strong>0.1 SOL</strong> to:</p>
+    <code class="text-xs break-all bg-gray-100 p-2 rounded block mb-4">
+      9MQVDZwRXqqjCb3ZPNnP2giKnvfkbgnNtKm1EVQYR5oR
+    </code>
+
+    <div class="text-xs text-gray-400 mt-4">
+      Powered by <a href="https://solanapay.com" class="text-purple-600 hover:underline">Solana Pay</a>
+    </div>
+  </div>
 </body>
 </html>
