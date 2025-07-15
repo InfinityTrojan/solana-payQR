@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Solana Pay Testnet QR</title>
+  <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 text-gray-800 min-h-screen flex flex-col items-center justify-center p-6">
+  <div class="bg-white shadow-xl rounded-xl p-8 max-w-md w-full text-center">
+    <h1 class="text-2xl font-bold text-purple-700 mb-4">Solana Pay - Devnet QR</h1>
+    <canvas id="qr-code" class="mx-auto mb-6"></canvas>
+    
+    <p class="text-sm text-yellow-600 bg-yellow-100 p-2 rounded mb-4 border border-yellow-300">
+      ⚠️ This QR code is for <strong>Devnet only</strong>. Make sure your wallet is set to <strong>Devnet</strong> before scanning!
+    </p>
+
+    <p class="text-gray-600 text-sm mb-2">Requesting <strong>0.1 SOL</strong> to:</p>
+    <code class="text-xs break-words bg-gray-100 p-2 rounded block mb-4">
+      9MQVDZwRXqqjCb3ZPNnP2giKnvfkbgnNtKm1EVQYR5oR
+    </code>
+
+    <div class="mt-6 text-xs text-gray-400">
+      Powered by <a href="https://solanapay.com" class="text-purple-600 hover:underline">Solana Pay</a>
+    </div>
+  </div>
+
+  <script>
+    const solanaPayUrl = 'solana:9MQVDZwRXqqjCb3ZPNnP2giKnvfkbgnNtKm1EVQYR5oR?amount=0.1&reference=9MQVDZwRXqqjCb3ZPNnP2giKnvfkbgnNtKm1EVQYR5oR&label=Testnet%20Store&message=Thanks%20for%20testing';
+
+    QRCode.toCanvas(document.getElementById('qr-code'), solanaPayUrl, {
+      width: 256,
+      margin: 2,
+      color: {
+        dark: "#000",
+        light: "#FFF"
+      }
+    }, function (error) {
+      if (error) console.error(error);
+    });
+  </script>
+</body>
+</html>
