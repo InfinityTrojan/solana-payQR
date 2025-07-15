@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Solana Pay Devnet QR</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
 </head>
 <body class="bg-gray-100 text-gray-900 flex items-center justify-center min-h-screen p-4">
   <div class="bg-white shadow-lg rounded-xl p-6 max-w-md w-full text-center">
@@ -13,7 +13,7 @@
     <img id="qr-img" class="mx-auto mb-6 w-64 h-64" alt="Solana Pay QR Code" />
 
     <div class="text-yellow-700 bg-yellow-100 border border-yellow-300 text-sm p-3 rounded mb-4">
-      ⚠️ This QR is for <strong>Devnet only</strong>. Ensure your wallet is set to <strong>Devnet</strong> before scanning.
+      ⚠️ This QR is for <strong>Devnet only</strong>. Make sure your wallet is set to <strong>Devnet</strong> before scanning.
     </div>
 
     <p class="text-sm text-gray-600 mb-2">Requesting <strong>0.1 SOL</strong> to:</p>
@@ -27,40 +27,37 @@
   </div>
 
   <script type="module">
-    import { encodeURL } from 'https://esm.sh/@solana/pay@0.3.8';
-    import { PublicKey } from 'https://esm.sh/@solana/web3.js@1.89.2';
-    import QRCode from 'https://esm.sh/qrcode@1.5.1';
+    import { PublicKey } from 'https://cdn.skypack.dev/@solana/web3.js';
+    import { encodeURL } from 'https://cdn.skypack.dev/@solana/pay';
+    import QRCode from 'https://cdn.skypack.dev/qrcode';
 
-    document.addEventListener('DOMContentLoaded', async () => {
-      try {
-        const recipient = new PublicKey('9MQVDZwRXqqjCb3ZPNnP2giKnvfkbgnNtKm1EVQYR5oR');
-        const amount = 0.1;
-        const reference = new PublicKey('9MQVDZwRXqqjCb3ZPNnP2giKnvfkbgnNtKm1EVQYR5oR');
-        const label = 'Testnet Store';
-        const message = 'Thanks for testing';
+    const recipient = new PublicKey('9MQVDZwRXqqjCb3ZPNnP2giKnvfkbgnNtKm1EVQYR5oR');
+    const amount = 0.1;
+    const reference = new PublicKey('9MQVDZwRXqqjCb3ZPNnP2giKnvfkbgnNtKm1EVQYR5oR');
+    const label = 'Testnet Store';
+    const message = 'Thanks for testing';
 
-        const url = encodeURL({
-          recipient,
-          amount,
-          reference,
-          label,
-          message
-        });
+    const url = encodeURL({
+      recipient,
+      amount,
+      reference,
+      label,
+      message,
+    });
 
-        const qrDataUrl = await QRCode.toDataURL(url.toString(), {
-          width: 256,
-          margin: 2,
-          color: {
-            dark: '#000000',
-            light: '#ffffff'
-          }
-        });
-
-        document.getElementById('qr-img').src = qrDataUrl;
-        console.log('QR code generated!');
-      } catch (e) {
-        console.error('Error generating QR:', e);
+    // Generate QR code as image
+    QRCode.toDataURL(url.toString(), {
+      width: 256,
+      margin: 2,
+      color: {
+        dark: '#000000',
+        light: '#ffffff',
       }
+    }).then((dataUrl) => {
+      document.getElementById('qr-img').src = dataUrl;
+      console.log('QR generated:', url.toString());
+    }).catch((err) => {
+      console.error('QR error:', err);
     });
   </script>
 </body>
